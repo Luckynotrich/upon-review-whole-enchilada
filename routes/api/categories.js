@@ -12,23 +12,23 @@ router.get("/", async (request, response, next) => {
   const getAllCats = require('./cat-db-services')
   console.log('userId categories = ', process.env.USERID)
   try {
-    let result = await getAllCats(process.env.USERID)
-    categories = await result.json(data);
+    await getAllCats(setCats, process.env.USERID)
+    categories = await setCats.cats;
     await console.log('categories =',categories)
-    await response.json(result.data)
+    await response.json(categories)
   }
   catch (err) {
    await console.error(`Could not get categories: ${err}`);
   }
 
 });
-function resolveAfter2Seconds(x) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(x);
-    }, 2000);
-  });
+const setCats = {
+  set current(category) {
+    this.cats.push(category);
+  },
+  cats: []
 }
+
 
 // get single member
 router.get("/:id", (req, res) => {

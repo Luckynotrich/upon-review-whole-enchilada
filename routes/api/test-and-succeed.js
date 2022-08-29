@@ -1,10 +1,6 @@
-//const { response } = require('express');
-
-const { stringify } = require('uuid');
-
-
 (async function () {
-  getAllCats = async (setCats, userId) => {
+
+    getAllCats = async (setCats, userId) => {
     return new Promise(resolve => {
       let { pool } = require('./fs_pool')
       const { Pool } = require('pg');
@@ -33,17 +29,22 @@ const { stringify } = require('uuid');
 
   let processCats = (setCats, cats) => {
     for (let i = 0; i < cats.length; i++) {
-      let newCat = { name:cats[i].cat_name, id:cats[i].id}
-      //console.log('pc ', newCat)
+    let newCat = { name:cats[i].cat_name, id:cats[i].id}
+      console.log('pc ', newCat)
       setCats.current = newCat
     }
   }
 
+  const setCats = {
+    set current(category) {
+      this.cats.push(category);
+    },
+    cats: []
+  }
 
-  //await getAllCats(setCats,'11d6af03-20ac-4f04-a21c-28ec418a2c18');
-  //console.log("outside  ", setCats.cats);
 
+
+  await getAllCats(setCats,'11d6af03-20ac-4f04-a21c-28ec418a2c18');
+  console.log("outside  ", setCats.cats);
 })();
 module.exports = getAllCats;
-
-

@@ -16,10 +16,9 @@ const ReviewForm = () => {
 
   useEffect(() => {
     async function GetCats() {
-
       await axios.get("/api/categories/", (request, response) => {
-        /* if (error) { throw error } */
-          _categories.current = await response.data
+        if (error) { throw error }
+          _categories.current = await response(data.rows)
           await console.log('_categories.current ',_categories.current)
         await setCategories(_categories.current);
       });
