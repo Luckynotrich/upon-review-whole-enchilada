@@ -9,7 +9,7 @@ router.use(express.urlencoded({ extended: false }));
 
 // Gets all records
 router.get("/", async (request, response, next) => {
-  const getAllCats = require('./cat-db-services')
+  const getAllCats = require('../db/cat-db-services')
   console.log('userId categories = ', process.env.USERID)
   try {
     await getAllCats(setCats, process.env.USERID)

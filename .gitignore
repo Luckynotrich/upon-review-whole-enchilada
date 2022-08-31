@@ -11,6 +11,10 @@
 # production
 /build
 
+# learning
+/example
+/trash
+
 # misc
 .pem
 .env

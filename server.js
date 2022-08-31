@@ -37,6 +37,7 @@ app.get('/review-creator', (req, res) => {
 
 // Category api routes
 app.use('/api/categories', require('./routes/api/categories'))
+app.use('/api/catDb', require('./routes/api/cat-db-api'))
 
 
 
