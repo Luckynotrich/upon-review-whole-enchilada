@@ -1,20 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const uuid = require("uuid");
-
+const axios = require("axios")
 
 let categories
 
 router.use(express.urlencoded({ extended: false }));
 
 // Gets all records
-router.get("/", async (request, response, next) => {
-  const getAllCats = require('../db/cat-db-services')
-  console.log('userId categories = ', process.env.USERID)
+router.get("/:userId", async (request, response, next) => {
+  let userId = request.params.userId
+  console.log('userId categories = ', userId)
   try {
-    await getAllCats(setCats, process.env.USERID)
-    categories = await setCats.cats;
-    await console.log('categories =',categories)
+    await axios.get('/api/catDb/getCats/'+ userId)
     await response.json(categories)
   }
   catch (err) {
@@ -31,7 +29,7 @@ const setCats = {
 
 
 // get single member
-router.get("/:id", (req, res) => {
+router.get("/getOne/:id", (req, res) => {
   const found = categories.some(
     (category) => category.id === parseInt(req.params.id)
   );
@@ -45,7 +43,7 @@ router.get("/:id", (req, res) => {
 });
 
 // add new category to array
-router.post("/", (req, res) => {
+router.post("/addNew/", (req, res) => {
   console.log("body", req.body);
   const newCategory = {
     id: uuid.v4(),
@@ -63,7 +61,7 @@ router.post("/", (req, res) => {
 });
 
 // update single member
-router.put("/:id", (req, res) => {
+router.put("/updateOne/:id", (req, res) => {
   const found = categories.some(
     (category) => category.id === parseInt(req.params.id)
   );
@@ -91,20 +89,35 @@ router.put("/:id", (req, res) => {
     res.status(400).json({ msg: `Category ${req.params.id} not found` });
   }
 });
-// async function writeCatFile(categories) {
-//   const filePath = path.resolve(__dirname, "../../data/catFile.js");
-//   const fileData =
-//     "const categories =" +
-//     JSON.stringify(categories, null, "\t") +
-//     "\n module.exports = categories";
 
-//   try {
-//     const data = await fs.writeFile(filePath, fileData, () =>
-//       console.log("writeCat", data)
-//     );
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+//delet one
+router.delete('/deleteOne/:id', (req,res) => {
+  const found = members.some(member => member.id === parseInt(req.params.id));
+  
+  if(found){
+      res.json({msg:'Member deleted', members: members.filter(member => 
+              member.id !== parseInt(req.params.id))});
+  }
+  else{
+      res.status(400).json({msg:`No member with the id of ${req.params.id}`});
+  }
+  });
+
+
+async function writeCatFile(categories) {
+  const filePath = path.resolve(__dirname, "../../data/catFile.js");
+  const fileData =
+    "const categories =" +
+    JSON.stringify(categories, null, "\t") +
+    "\n module.exports = categories";
+
+  try {
+    const data = await fs.writeFile(filePath, fileData, () =>
+      console.log("writeCat", data)
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 module.exports = router;
