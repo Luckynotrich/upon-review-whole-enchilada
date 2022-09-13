@@ -14,15 +14,14 @@ const { stringify } = require('uuid');
         if (err) {
           return console.error('Error acquiring client', err.stack)
         }
-        console.log('userId = ', userId, 'InSide CAT-DB-servises')
-        client.query('SELECT  id, cat_name FROM category WHERE userId = $1', [userId], async (err, result) => {
+        client.query('SELECT category.id , cat_name, preference.id AS prefId, pref, procon FROM category LEFT JOIN preference ON category.id=preference.cat_id  WHERE userId = $1 ORDER BY cat_name', [userId], async (err, result) => {
           release()
           if (err) {
             return console.error('Error executing query', err.stack)
           }
-          setTimeout(() => {
-            resolve();
-          }, 1);
+          setTimeout(() =>
+          resolve(),1)
+
           let cats = await result.rows
           processCats(setCats, cats)
         })
@@ -31,12 +30,32 @@ const { stringify } = require('uuid');
 }
 
 
-  let processCats = (setCats, cats) => {
-    for (let i = 0; i < cats.length; i++) {
-      let newCat = { name:cats[i].cat_name, id:cats[i].id}
-      //console.log('pc ', newCat)
-      setCats.current = newCat
+//convert db rows to category objects
+  let processCats = (_setCats, cats) => {
+    let cat = createCat(cats[0])
+    for (i = 0; i < cats.length; i++) {
+      
+      if (cats[i].cat_name !== cat.name) {
+        _setCats.current = cat
+        delete cat
+        cat = createCat(cats[i])
+      }
+      let pref = {value: cats[i].pref, id:cats[i].prefid}
+      
+      cats[i].procon ? cat.pros.push(pref): cat.cons.push(pref)
     }
+    _setCats.current = cat
+  }
+
+
+  const createCat = (pref) => {
+    
+      return this.cat = {
+        name: pref.cat_name,
+        id: pref.id,
+        pros: [],
+        cons: [],
+      }
   }
 
 

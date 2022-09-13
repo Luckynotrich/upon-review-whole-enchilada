@@ -1,21 +1,32 @@
 const express = require("express");
+const app = express;
 const router = express.Router();
 const uuid = require("uuid");
-const axios = require("axios")
+
+const getAllCats = require('../db/cat-db-services')
+
 
 let categories
 
 router.use(express.urlencoded({ extended: false }));
 
 // Gets all records
-router.get("/:userId", async (request, response, next) => {
-  let userId = request.params.userId
-  console.log('userId categories = ', userId)
+router.get("/:userId", async (req, response, next) => {
+  
+  let userId = req.params.userId
+  //console.log('categories userId = ', userId)
+ 
   try {
-    await axios.get('/api/catDb/getCats/'+ userId)
-    await response.json(categories)
+    setCats.cats = []
+    await getAllCats(setCats, userId)
+    categories = await setCats.cats
+    setTimeout(() => 1000)
+    response.send(categories)
+    for(let i = 0;i < categories[0].cons.length;i++)
+    console.log("cons= ",categories[0].cons[i])
   }
   catch (err) {
+    console.log(err)
    await console.error(`Could not get categories: ${err}`);
   }
 
@@ -23,6 +34,7 @@ router.get("/:userId", async (request, response, next) => {
 const setCats = {
   set current(category) {
     this.cats.push(category);
+    //console.log('sc = ',category)
   },
   cats: []
 }

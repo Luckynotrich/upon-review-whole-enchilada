@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080
 
 app.use('/favicon.ico', express.static('./favicon.ico'))
 
-app.use(logger)
+//app.use(logger)
 //app.use(responder)
 
 app.use(express.json())

@@ -33,7 +33,7 @@
     "eject": "react-scripts eject",
     "serve": "node server.js",
     "watch": "clear && nodemon server",
-    "dev": "concurrently \"npm run watch\" \"npm run start\" "
+    "dev": "concurrently \"npm run start\" \"npm run watch\"  "
   },
   "eslintConfig": {
     "extends": [
