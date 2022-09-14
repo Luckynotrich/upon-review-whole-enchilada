@@ -18,7 +18,7 @@ const SelectedDataContext = createContext({});
   const isItemSelected = id => propArray.includes(id);
   const clearPropArray = () => setPropArray([])
 
-  useEffect(() => console.log('UE:propArray ', propArray), [propArray])
+  useEffect(() => console.log('UI:propArray ', propArray), [propArray])
 
   const providerProps = {
     isItemSelected,

@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080
 
 app.use('/favicon.ico', express.static('./favicon.ico'))
 
-//app.use(logger)
+app.use(logger)
 //app.use(responder)
 
 app.use(express.json())
@@ -44,7 +44,7 @@ app.use('/api/catDb', require('./routes/api/cat-db-api'))
 // start the server
 app.listen(
   PORT,
-  console.log(`Something awesome is happening at http://localhost:${PORT}`)
+  console.log(`Something gruesome is happening at http://localhost:${PORT}`)
 );
 
 (async () => { await open(process.env.SERVER + PORT + '/', { app: { name: 'google-chrome' } }) })()

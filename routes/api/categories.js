@@ -14,16 +14,15 @@ router.use(express.urlencoded({ extended: false }));
 router.get("/:userId", async (req, response, next) => {
   
   let userId = req.params.userId
-  //console.log('categories userId = ', userId)
+  console.log('categories userId = ', userId)
  
   try {
     setCats.cats = []
     await getAllCats(setCats, userId)
     categories = await setCats.cats
-    setTimeout(() => 1000)
+    setTimeout(() => 1)
+    console.log('categories  ',categories)
     response.send(categories)
-    for(let i = 0;i < categories[0].cons.length;i++)
-    console.log("cons= ",categories[0].cons[i])
   }
   catch (err) {
     console.log(err)

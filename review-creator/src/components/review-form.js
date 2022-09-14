@@ -14,23 +14,27 @@ const ReviewForm = () => {
   const [catState, setCatState] = useState("");
   
 
-
   let _categories = useRef()
   let isSubscribed = useRef(true);
 
   useEffect(() => {
     async function GetCats() {
+      try{
+      let response = await axios.get("/api/categories/" + userId);
+         _categories.current = await response.data
+         setCategories(_categories.current);
+        }
+        catch(error){
+          console.log(error)
+        }
       
-      await axios.get("/api/categories/" + userId, (request, response, error) => {
-        if (error) { throw error } 
-        
-         setCategories(response.rows);
-      });
-    
-
+      
+      console.log("There should be something here!  ", _categories.current)
     return () => (isSubscribed.currentValue = false)
   }
+  
     GetCats();
+    
 }, []);
 
 
@@ -51,7 +55,8 @@ return (
       {categories.length > 0 ? (
         <Select categories={categories} onSelect={chooseCat} key={categories.id} />
       ) : (
-        " Categories currently unavailable. Please check the internet connection and refresh the browser"
+         " Categories currently unavailable. Please check the internet connection and refresh the browser"
+
       )}
     </form>
 

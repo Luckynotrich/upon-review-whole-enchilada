@@ -28,7 +28,7 @@
     })
   }
 
-
+//convert db rows to category objects
   let processCats = (_setCats, cats) => {
     let cat = createCat(cats[0])
     for (i = 0; i < cats.length; i++) {
@@ -54,7 +54,6 @@
         pros: [],
         cons: [],
       }
-  //  }
   }
 
   const _setCats = {
